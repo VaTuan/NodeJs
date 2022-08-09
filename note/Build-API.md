@@ -15,6 +15,8 @@ const server = http.createServer((req, res) => {
 
     // check if has path is '/api' 
   } else if (pathName === "/api") {
+
+    // sepecity content-typo to actually what data will be send to client
     res.writeHead(200, {
       "Content-type": "application/json",
     });

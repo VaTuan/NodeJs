@@ -6,8 +6,10 @@ const productRouter = require("./routes/productRoutes");
 const app = express();
 
 // 1) MIDDLE WARE
-//implement morgan middleware
-app.use(morgan("dev"));
+//implement morgan middleware when acctualy in development evironment
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 // this is middle ware to transfrom data to json (for post,... method)
 app.use(express.json());

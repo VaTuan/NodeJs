@@ -20,7 +20,18 @@ exports.checkID = (req, res, next, val) => {
   next();
 };
 
-// 2) ROUTE HANDLERS
+// check body in post method, if name and price are null
+exports.checkBody = (req, res, next) => {
+  const { productName, price } = req.body;
+  if (!productName || !price) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Missing name or price",
+    });
+  }
+  next();
+};
+
 exports.getAllProducts = (req, res) => {
   res.status(200).json({
     requestAt: req.requestTime,

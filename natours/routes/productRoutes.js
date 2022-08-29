@@ -9,7 +9,7 @@ router.param("id", productController.checkID);
 router
   .route("/")
   .get(productController.getAllProducts)
-  .post(productController.createNewProduct);
+  .post(productController.checkBody, productController.createNewProduct);
 
 router
   .route("/:id")

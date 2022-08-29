@@ -3,6 +3,9 @@ const productController = require("../controllers/productController");
 
 const router = express.Router();
 
+// add param middleware to validate if id is not valid
+router.param("id", productController.checkID);
+
 router
   .route("/")
   .get(productController.getAllProducts)

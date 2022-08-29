@@ -8,6 +8,18 @@ const findProductIndex = (productId) => {
   return products.findIndex((el) => el.id === productId);
 };
 
+exports.checkID = (req, res, next, val) => {
+  const id = val * 1;
+  const index = findProductIndex(id);
+  if (index < 0) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Invalid Id",
+    });
+  }
+  next();
+};
+
 // 2) ROUTE HANDLERS
 exports.getAllProducts = (req, res) => {
   res.status(200).json({
@@ -23,13 +35,7 @@ exports.getAllProducts = (req, res) => {
 exports.getProductById = (req, res) => {
   const id = req.params.id * 1;
   const index = findProductIndex(id);
-  if (index < 0) {
-    console.log("run herre");
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid Id",
-    });
-  }
+
   res.status(200).json({
     status: "success",
     data: {
@@ -58,12 +64,6 @@ exports.createNewProduct = (req, res) => {
 
 exports.updateProduct = (req, res) => {
   const index = findProductIndex(req.params.id * 1);
-  if (index < 0) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid Id",
-    });
-  }
   products[index] = { ...products[index], ...req.body };
 
   fs.writeFile(
@@ -81,13 +81,6 @@ exports.updateProduct = (req, res) => {
 };
 
 exports.deleteProduct = (req, res) => {
-  const index = findProductIndex(req.params.id * 1);
-  if (index < 0) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid Id",
-    });
-  }
   const newProduct = products.filter(
     (item) => `${item.id}` !== `${req.params.id}`
   );

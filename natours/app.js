@@ -12,6 +12,12 @@ app.use(morgan("dev"));
 // this is middle ware to transfrom data to json (for post,... method)
 app.use(express.json());
 
+// serving static files
+// try http://localhost:3001/template-overview.html in your browser
+// all file, image have on public folder can show when type correct path
+// example http://localhost:3001/avatar.png (avatar image has already in public folder)
+app.use(express.static(`${__dirname}/public`));
+
 // this is my middleware,
 app.use((req, res, next) => {
   console.log("-----Hello from middleware-----");

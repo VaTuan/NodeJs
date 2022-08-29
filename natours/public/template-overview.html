@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NODE FARM</title>
+
+    <style>
+      body {
+        background-color: rgb(110, 219, 219);
+      }
+      .cards-container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        background-color: #ffffff;
+        border-radius: 5px;
+        justify-content: space-between;
+      }
+
+      .card__image {
+        max-width: 100px;
+        margin-right: 1rem;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      .card__details {
+        display: flex;
+        align-items: center;
+      }
+
+      .card__details--box {
+        margin-right: 0.5rem;
+      }
+      .not-organic{
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Node Farm</h1>
+    <div class="cards-container">{%PRODUCT_CARDS%}</div>
+  </body>
+</html>

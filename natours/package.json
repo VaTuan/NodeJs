@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "learing node, express and mongoDB",
   "main": "server.js",
+  "engines": {
+    "node": ">=10.24.1"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "start:dev": "nodemon server.js",
-    "start:prod" : "NODE_ENV=production nodemon server.js"
+    "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,5 +17,16 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.1",
+    "prettier": "^2.7.1"
   }
 }

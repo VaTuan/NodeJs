@@ -6,7 +6,7 @@ const productRouter = require("./routes/productRoutes");
 const app = express();
 
 // 1) MIDDLE WARE
-//implement morgan middleware when acctualy in development evironment
+//  implement morgan middleware when acctualy in development evironment
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//this is middleware add requestTime to req, then you can get in req, something like req.requestTime
+// this is middleware add requestTime to req, then you can get in req, something like req.requestTime
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();

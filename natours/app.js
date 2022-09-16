@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 
 const productRouter = require("./routes/productRoutes");
+const courseRouter = require("./routes/courseRoutes");
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/courses", courseRouter);
 
 module.exports = app;

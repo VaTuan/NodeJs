@@ -16,6 +16,9 @@
   "dependencies": {
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "mongoose": "^6.5.5",
+    "mongoose-delete": "^0.5.4",
+    "mongoose-slug-generator": "^1.0.4",
     "morgan": "^1.10.0"
   },
   "devDependencies": {

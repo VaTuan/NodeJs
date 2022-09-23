@@ -212,6 +212,64 @@ class TourController {
       });
     }
   }
+
+  async getMonthyPlan(req, res) {
+    try {
+      const year = req.params.year * 1;
+      const plan = await Tour.aggregate([
+        {
+          $unwind: "$startDates",
+        },
+        {
+          $match: {
+            startDates: {
+              $gte: new Date(`${year}-01-01`),
+              $lte: new Date(`${year}-12-31`),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: { $month: "$startDates" },
+            numTourStarts: { $sum: 1 },
+
+            // pushed one filed name
+            _tours: { $push: "$name" },
+            // used push multiple
+            tours: {
+              $push: {
+                name: "$name",
+                price: "$price",
+                // desc: "Push multiple !!",
+              },
+            },
+          },
+        },
+        // modify title
+        { $addFields: { month: "$_id" } },
+        {
+          $project: {
+            _id: 0, // specify _id is 0 (not null or something diffferent from 0)
+          },
+        },
+        {
+          $sort: {
+            numTourStarts: -1,
+          },
+        },
+      ]);
+
+      res.status(200).json({
+        status: "success",
+        data: plan,
+      });
+    } catch (error) {
+      res.status(404).json({
+        status: "fail",
+        message: error,
+      });
+    }
+  }
 }
 
 module.exports = new TourController();

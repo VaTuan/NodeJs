@@ -121,7 +121,9 @@ class TourController {
   async updateTour(req, res) {
     try {
       const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+        // enable mode to get result as tour
         new: true,
+        // enable mode to validate when update
         runValidators: true,
       });
 

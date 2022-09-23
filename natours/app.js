@@ -3,14 +3,17 @@ const morgan = require("morgan");
 
 const productRouter = require("./routes/productRoutes");
 const courseRouter = require("./routes/courseRoutes");
+const tourRouter = require("./routes/tourRoutes");
 
 const app = express();
 
 // 1) MIDDLE WARE
 //  implement morgan middleware when acctualy in development evironment
 if (process.env.NODE_ENV === "development") {
+  console.log("use morgan");
   app.use(morgan("dev"));
 }
+app.use(morgan("dev"));
 
 // this is middle ware to transfrom data to json (for post,... method)
 app.use(express.json());
@@ -23,7 +26,7 @@ app.use(express.static(`${__dirname}/public`));
 
 // this is my middleware,
 app.use((req, res, next) => {
-  console.log("-----Hello from middleware-----");
+  // console.log("-----Hello from middleware-----");
   next();
 });
 
@@ -35,5 +38,6 @@ app.use((req, res, next) => {
 
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/courses", courseRouter);
+app.use("/api/v1/tours", tourRouter);
 
 module.exports = app;

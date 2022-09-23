@@ -31,6 +31,7 @@ class TourController {
 
       // 2) Advanced filtering
       let queryStr = JSON.stringify(queryObj);
+      // eslint-disable-next-line prettier/prettier
       queryStr = queryStr.replace(
         /\b(gte|gt|lte|lt)\b/g,
         (match) => `$${match}`
@@ -143,6 +144,66 @@ class TourController {
       res.status(204).json({
         status: "success",
         data: null,
+      });
+    } catch (error) {
+      res.status(404).json({
+        status: "fail",
+        message: error,
+      });
+    }
+  }
+
+  async getTourStats(req, res) {
+    try {
+      const stats = await Tour.aggregate(
+        // each element in this array will be one of the stages
+        [
+          {
+            $match: { ratingsAverage: { $gte: 2 } },
+          },
+          // there are all the statistics for all the tours together
+          // {
+          //   $group: {
+          //     _id: null,
+          //     numTours: { $sum: 1 },
+          //     numRatings: { $sum: "$ratingsQuantity" },
+          //     avgRating: { $avg: "$ratingsAverage" },
+          //     avgPrive: { $avg: "$price" },
+          //     minPrice: { $min: "$price" },
+          //     maxPrice: { $max: "$price" },
+          //   },
+          // },
+
+          // group for different fileds
+          // this mean group by difficulty field, all tour have the same difficulty will be grouped
+          {
+            $group: {
+              _id: "$difficulty",
+              // _id: "$ratingsAverage",
+              // _id: { $toUpper: "$difficulty" },
+              numTours: { $sum: 1 },
+              numRatings: { $sum: "$ratingsQuantity" },
+              avgRating: { $avg: "$ratingsAverage" },
+              avgPrive: { $avg: "$price" },
+              minPrice: { $min: "$price" },
+              maxPrice: { $max: "$price" },
+            },
+          },
+
+          // sort
+          {
+            $sort: { avgPrive: -1 }, // 1 for ascending
+          },
+          // match multiple time
+          {
+            // matched once before
+            $match: { _id: { $ne: "easy" } },
+          },
+        ]
+      );
+      res.status(200).json({
+        status: "success",
+        data: stats,
       });
     } catch (error) {
       res.status(404).json({

@@ -58,6 +58,10 @@ const tourSchema = new Schema(
     },
     startDates: [Date],
     slug: String,
+    secretTour: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -98,6 +102,20 @@ tourSchema.pre("save", function (next) {
 // it mean must completed 1 and 2
 tourSchema.post("save", function (doc, next) {
   console.log(doc); // doc have already create
+  next();
+});
+
+// ============================== QUERY MIDDLEWARE ====================================
+// tourSchema.pre("find", function (next) {
+// use regular expresion match all method start with find like find, findOne, findById,v.vv
+tourSchema.pre(/^find/, function (next) {
+  // only find tours have secretTour filed is false
+  this.find({ secretTour: { $ne: true } });
+  next();
+});
+
+tourSchema.post(/^find/, function (docs, next) {
+  console.log({ docs });
   next();
 });
 

@@ -187,6 +187,13 @@ class TourController {
               avgPrive: { $avg: "$price" },
               minPrice: { $min: "$price" },
               maxPrice: { $max: "$price" },
+              tours: {
+                $push: {
+                  name: "$name",
+                  price: "$price",
+                  duration: "$duration",
+                },
+              },
             },
           },
 
@@ -197,7 +204,7 @@ class TourController {
           // match multiple time
           {
             // matched once before
-            $match: { _id: { $ne: "easy" } },
+            $match: { _id: { $ne: "easyy" } },
           },
         ]
       );

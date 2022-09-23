@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const { Schema } = mongoose;
 
@@ -56,6 +57,7 @@ const tourSchema = new Schema(
       default: Date.now(),
     },
     startDates: [Date],
+    slug: String,
   },
   {
     toJSON: { virtuals: true },
@@ -66,6 +68,37 @@ const tourSchema = new Schema(
 // virtual properties
 tourSchema.virtual("durationWeeks").get(function () {
   return this.duration / 7;
+});
+
+// ========================== DOCUMENT MIDDLEWARE =====================================
+// document middleware ( this is middleware)
+// only runs before .save() and .create();
+// it gonna run before an actual event
+// that event in this case is 'save' event
+// call back function will be called before an actual document is saves to database
+
+// always must using next() function, if not it blocked
+
+// 1
+tourSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  // next(); if have not next() right here, can not process to next middleware
+  next();
+});
+
+// if pass here will be run code below
+//2
+tourSchema.pre("save", function (next) {
+  console.log("=======Will save document...==============");
+  // next(); if have not next() right here, can not process to next middleware
+  next();
+});
+
+// post middleware are excuted after ALL the pre middleware function have completed
+// it mean must completed 1 and 2
+tourSchema.post("save", function (doc, next) {
+  console.log(doc); // doc have already create
+  next();
 });
 
 const Tour = mongoose.model("Tour", tourSchema);

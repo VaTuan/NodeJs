@@ -1,27 +1,22 @@
 const Tour = require("../models/Tour");
+const catchAsync = require("../utils/catchAsync");
 
 class TourController {
   //[POST] /tours
-  async createTour(req, res) {
-    try {
-      const formData = req.body;
-      const newTour = await Tour.create(formData);
-      res.status(201).json({
-        status: "success",
-        data: {
-          tour: newTour,
-        },
-      });
-    } catch (error) {
-      res.status(400).json({
-        status: "fail",
-        message: error,
-      });
-    }
-  }
+
+  createTour = catchAsync(async (req, res) => {
+    const formData = req.body;
+    const newTour = await Tour.create(formData);
+    res.status(201).json({
+      status: "success",
+      data: {
+        tour: newTour,
+      },
+    });
+  });
 
   //   [GET] /tours
-  async getAllTours(req, res) {
+  async getAllTours(req, res, next) {
     try {
       // 1) Filtering
       const queryObj = { ...req.query };
@@ -84,12 +79,7 @@ class TourController {
         },
       });
     } catch (error) {
-      res.status(404).json({
-        status: "fail",
-        data: null,
-        // message: "Fail to fetch !",
-        message: error,
-      });
+      next(error);
     }
   }
 
@@ -102,7 +92,7 @@ class TourController {
   }
 
   //   [GET] /tours/:id
-  async getTour(req, res) {
+  async getTour(req, res, next) {
     try {
       const tour = await Tour.findById(req.params.id);
       res.status(200).json({
@@ -110,15 +100,12 @@ class TourController {
         data: tour,
       });
     } catch (error) {
-      res.status(404).json({
-        status: "fail",
-        message: "fail to fetch !",
-      });
+      next(error);
     }
   }
 
   // [PATCH] /tours/:id
-  async updateTour(req, res) {
+  async updateTour(req, res, next) {
     try {
       const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
         // enable mode to get result as tour
@@ -132,15 +119,12 @@ class TourController {
         data: tour,
       });
     } catch (error) {
-      res.status(404).json({
-        status: "fail",
-        message: error,
-      });
+      next(error);
     }
   }
 
   // [DELETE] /tours/:id
-  async deleteTour(req, res) {
+  async deleteTour(req, res, next) {
     try {
       await Tour.findByIdAndDelete(req.params.id);
       res.status(204).json({
@@ -148,14 +132,11 @@ class TourController {
         data: null,
       });
     } catch (error) {
-      res.status(404).json({
-        status: "fail",
-        message: error,
-      });
+      next(error);
     }
   }
 
-  async getTourStats(req, res) {
+  async getTourStats(req, res, next) {
     try {
       const stats = await Tour.aggregate(
         // each element in this array will be one of the stages
@@ -206,7 +187,7 @@ class TourController {
           // match multiple time
           {
             // matched once before
-            $match: { _id: { $ne: "easyy" } },
+            $match: { _id: { $ne: "easy" } },
           },
         ]
       );
@@ -215,14 +196,11 @@ class TourController {
         data: stats,
       });
     } catch (error) {
-      res.status(404).json({
-        status: "fail",
-        message: error,
-      });
+      next(error);
     }
   }
 
-  async getMonthyPlan(req, res) {
+  async getMonthyPlan(req, res, next) {
     try {
       const year = req.params.year * 1;
       const plan = await Tour.aggregate([
@@ -273,10 +251,7 @@ class TourController {
         data: plan,
       });
     } catch (error) {
-      res.status(404).json({
-        status: "fail",
-        message: error,
-      });
+      next(error);
     }
   }
 }

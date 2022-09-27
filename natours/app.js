@@ -12,10 +12,8 @@ const app = express();
 // 1) MIDDLE WARE
 //  implement morgan middleware when acctualy in development evironment
 if (process.env.NODE_ENV === "development") {
-  console.log("use morgan");
   app.use(morgan("dev"));
 }
-app.use(morgan("dev"));
 
 // this is middle ware to transfrom data to json (for post,... method)
 app.use(express.json());
@@ -47,6 +45,8 @@ app.use("/api/v1/tours", tourRouter);
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
+
+// Error middleware
 
 app.use(globalErrorHandler);
 

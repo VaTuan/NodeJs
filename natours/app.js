@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const productRouter = require("./routes/productRoutes");
 const courseRouter = require("./routes/courseRoutes");
 const tourRouter = require("./routes/tourRoutes");
+const userRouter = require("./routes/userRoutes");
+
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./middleware/errorMiddleware");
 
@@ -40,6 +42,7 @@ app.use((req, res, next) => {
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/tours", tourRouter);
+app.use("/api/v1/users", userRouter);
 
 // Handing unhandled routes
 app.all("*", (req, res, next) => {

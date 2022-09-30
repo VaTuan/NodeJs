@@ -32,3 +32,5 @@ const server = http.createServer((req, res) => {
 });
 
 ```
+- create accessToken variables in postman
+-pm.environment.set("accessToken", pm.response.json().token);

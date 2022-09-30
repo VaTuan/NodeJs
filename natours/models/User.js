@@ -19,6 +19,7 @@ const userShema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a password"],
     minlength: 8,
+    select: false, // never show in response
   },
   passwordConfirm: {
     type: String,
@@ -31,15 +32,43 @@ const userShema = new mongoose.Schema({
       message: "Passwords are not the same",
     },
   },
+  passwordChangedAt: Date,
 });
 
 userShema.pre("save", async function (next) {
+  // only run this funtion if password was actually modified
   if (!this.isModified("password")) {
     return next();
   }
+
+  // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete passwordConfirm field
   this.passwordConfirm = undefined;
+  next();
 });
+
+// candidatePassword that the user passes in the body
+// userPassword : password from db have been hash by bcrypt package
+userShema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userShema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return JWTTimestamp < changedTimestamp;
+  }
+  // False means NOT changed
+  return false;
+};
 
 const User = mongoose.model("User", userShema);
 module.exports = User;

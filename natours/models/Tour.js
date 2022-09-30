@@ -120,7 +120,7 @@ tourSchema.pre("save", function (next) {
 // post middleware are excuted after ALL the pre middleware function have completed
 // it mean must completed 1 and 2
 tourSchema.post("save", function (doc, next) {
-  console.log(doc); // doc have already create
+  // console.log(doc); // doc have already create
   next();
 });
 
@@ -134,7 +134,7 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 tourSchema.post(/^find/, function (docs, next) {
-  console.log({ docs });
+  // console.log({ docs }); doc have already find
   next();
 });
 

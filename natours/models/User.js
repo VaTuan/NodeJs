@@ -57,6 +57,14 @@ userShema.pre("save", async function (next) {
   next();
 });
 
+userShema.pre("save", function (next) {
+  if (!this.isModified("password") || this.isNew) {
+    return next();
+  }
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 // candidatePassword that the user passes in the body
 // userPassword : password from db have been hash by bcrypt package
 userShema.methods.correctPassword = async function (

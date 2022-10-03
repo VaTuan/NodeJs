@@ -80,12 +80,13 @@ userShema.methods.changedPasswordAfter = function (JWTTimestamp) {
 
 userShema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
+
+  // save 2 fileds below to Database using this.[field]
   this.passwordResetToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  console.log({ resetToken }, this.passwordResetToken);
   // expires after 10 minus
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 

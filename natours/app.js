@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 
 const productRouter = require("./routes/productRoutes");
 const courseRouter = require("./routes/courseRoutes");
@@ -13,11 +14,16 @@ const globalErrorHandler = require("./middleware/errorMiddleware");
 const app = express();
 
 // 1) GLOBAL MIDDLE WARE
+// Set Security HTTP headers
+app.use(helmet());
+
+// Development loging
 //  implement morgan middleware when acctualy in development evironment
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// Limit request from same API
 // If within a period of 15 minutes, if there are more than 100 requests sent, it will be stopped
 // to avoid a BRUTE FORCE ATTACKS
 const limiter = rateLimit({
@@ -27,15 +33,21 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
+// Body parser, reading data from body into req.body
 // this is middle ware to transfrom data to json (for post,... method)
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "10kb",
+  })
+);
 
-// serving static files
+// Serving static files
 // try http://localhost:3001/template-overview.html in your browser
 // all file, image have on public folder can show when type correct path
 // example http://localhost:3001/avatar.png (avatar image has already in public folder)
 app.use(express.static(`${__dirname}/public`));
 
+// Test middleware
 // this is my middleware,
 app.use((req, res, next) => {
   // console.log("-----Hello from middleware-----");
@@ -45,6 +57,7 @@ app.use((req, res, next) => {
 // this is middleware add requestTime to req, then you can get in req, something like req.requestTime
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  // console.log(req.headers);
   next();
 });
 
@@ -60,7 +73,6 @@ app.all("*", (req, res, next) => {
 });
 
 // Error middleware
-
 app.use(globalErrorHandler);
 
 module.exports = app;

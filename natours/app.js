@@ -4,6 +4,7 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const httpParameterPollution = require("hpp");
 
 const productRouter = require("./routes/productRoutes");
 const courseRouter = require("./routes/courseRoutes");
@@ -47,6 +48,13 @@ app.use(
 app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
+
+// Prevent parammeter pollution
+app.use(
+  httpParameterPollution({
+    whitelist: ["duration"],
+  })
+);
 
 // Serving static files
 // try http://localhost:3001/template-overview.html in your browser

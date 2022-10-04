@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 
 const productRouter = require("./routes/productRoutes");
 const courseRouter = require("./routes/courseRoutes");
@@ -11,11 +12,20 @@ const globalErrorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
 
-// 1) MIDDLE WARE
+// 1) GLOBAL MIDDLE WARE
 //  implement morgan middleware when acctualy in development evironment
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+// If within a period of 15 minutes, if there are more than 100 requests sent, it will be stopped
+// to avoid a BRUTE FORCE ATTACKS
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 15 * 60 * 1000,
+  message: "Too many request from this IP, please try again in an hour !",
+});
+app.use("/api", limiter);
 
 // this is middle ware to transfrom data to json (for post,... method)
 app.use(express.json());

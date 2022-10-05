@@ -15,6 +15,7 @@
     >+ 1:MANY
 
     One document can relate to hundreds or thousands of other document
+    
     ![markdown](https://res.cloudinary.com/dbcwtjvf3/image/upload/v1664955331/Screenshot_from_2022-10-05_14-35-17_avixgp.png)
 
     *(1 movie can have thousands of reviews)*      
@@ -28,7 +29,7 @@
 - ***many:many***
     
     ![markdown](https://res.cloudinary.com/dbcwtjvf3/image/upload/v1664955716/Screenshot_from_2022-10-05_14-41-45_epg8ux.png)
-    
+
     *(1 movie can have **many** actors, but one actor can also play in **many** movies)*
 
 ## 2. REFERENCING VS. EMBEDDING

@@ -92,3 +92,7 @@
 *(Khong cho phep cac mang phat trien vo thoi han. Vi vay, neu ban can chuan hoa, su dung...)*
 
 * Use **two-way referencing** for `MANY:MANY` relationships.
+
+### The NATOURS DATA model
+
+![markdown](https://res.cloudinary.com/dbcwtjvf3/image/upload/v1664963865/Screenshot_from_2022-10-05_16-57-30_exeazo.png)

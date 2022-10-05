@@ -41,59 +41,14 @@
 
 #### 1. REFERENCED / NORMALIZED (Duoc tham chieu / Chuan hoa)
 
-`movie`
+![markdown](https://res.cloudinary.com/dbcwtjvf3/image/upload/v1664956255/Screenshot_from_2022-10-05_14-50-42_ajvtq7.png)
 
-```php
-{
-    "_id" : ObjectID('222'),
-    "title" : "Bong dung trung so",
-    "releaseYear": 2022,
-    // this call Child Referencing
-    "actors": [
-        ObjectID('555'),  // Referencing (child) (1)
-        ObjectID('777')
-    ]
-}
-```
-`actor`
-
-```php
-{
-    "_id": ObjectID('555'), // (1)
-    "name": "Tuan deptrai",
-    "age": 24
-}
-```
-```php
-{
-    "_id": ObjectID('777'),
-    "name": "Trang beo",
-    "age": 22
-}
-```
 * Preformance: it's easier to query each document on its own *(việc tự truy vấn từng tài liệu dễ dàng hơn)*
 * We need 2 queries to get data from referenced document
 
 #### 2. EMBEDDED / DENORMALIZED (Duoc nhung vao / Khong chuan hoa)
-```php
-{
-    _id: ObjectID("222"),
-    title: "Bong dung trung so",
-    releaseYear: 2022,
-    actors: [
-    // Embedded documents
-      {
-        _id: ObjectID("555"),
-        name: "Tuan deptrai",
-        age: 24,
-      },
-      {
-        _id: ObjectID("777"),
-        name: "Trang beo",
-        age: 22,
-      },
-    ],
-};
-```
+
+![markdown](https://res.cloudinary.com/dbcwtjvf3/image/upload/v1664956360/Screenshot_from_2022-10-05_14-52-27_kx4xin.png)
+
 * Preformance: we can get all the information in one query *(chúng ta có thể nhận được tất cả thông tin trong một query)*
 * Impossible to query the embedded document on its own *(Không thể tự truy vấn embedded document)*

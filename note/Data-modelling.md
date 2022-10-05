@@ -80,7 +80,7 @@
 * In general, **always favor embedding**, unless there is good reason not to embed. Especially on `1:FEW` and `1:MANY` relationships;
 *(Noi chung, luon luon ung ho embedding, tru khi co mot li do de khong dung embed. Dac biet la tren ...)*
 
-* A `1:TON` or a `MANY:MANY` relationship is usually a good reason to *reference* instead of embedding;
+* A `1:TON` or a `MANY:MANY` relationship is usually a good reason to **reference** instead of embedding;
 
 * Also, favor **referencing** when data is updated a lot and if you need to frequently access a dataset on its own; 
 *(Cung ung ho **referencing** khi data cap nhat nhieu va neu ban can truy cap thuong xuyen data )*
